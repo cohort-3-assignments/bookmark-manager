@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Manager</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    #nav {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .container {
+        width: 50%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    label {
+        margin-top: 10px;
+    }
+
+    input {
+        margin-bottom: 10px;
+        padding: 5px;
+    }
+
+    input[type="submit"] {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        border: 1px solid #333;
+        padding: 10px;
+        margin-top: 10px;
+        width: 50%;
+        display: flex;
+        justify-content: space-between;
+
+    }
+
+    #bookmarks {
+        margin-top: 20px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .delete {
+        color: red;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+
+    .delete:hover {
+        text-decoration: underline;
+    }
+</style>
+<body>
+
+    <div id="nav">
+        <h1>Bookmark Manager</h1>
+    </div>
+
+    <div class="container">
+        <form action="">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" required>
+
+            <label for="url">URL:</label>
+            <input type="text" name="url" id="url" required>
+            
+            <input type="submit" value="Add Bookmark">
+        </form>
+    </div>
+    
+    <div class="container">
+        <h2>Bookmarks</h2>
+        <ul id="bookmarks"></ul>
+
+
+    </div>
+</body>
+
+<script>
+    const form = document.querySelector('form');
+
+    const bookmarks = [];
+    form.addEventListener('submit', (e) => {
+
+        e.preventDefault();
+
+        const name = document.querySelector('#name').value;
+        const url = document.querySelector('#url').value;
+
+        bookmarks.push({name, url});
+
+        renderBookmarks();
+
+    });
+
+    const renderBookmarks = () => {
+        const bookmarksList = document.querySelector('#bookmarks');
+        bookmarksList.innerHTML = '';
+
+        bookmarks.forEach(bookmark => {
+            const li = document.createElement('li');
+
+            li.innerHTML = `
+                <h3><a href="${bookmark.url}" target="_blank">${bookmark.name}</a></h3>
+                <a class="delete" href="#" onclick="deleteBookmark('${bookmark.url}')" >Delete</a>
+            `;
+
+            bookmarksList.appendChild(li);
+        });
+    }
+
+    const deleteBookmark = (url) => {
+        bookmarks.forEach((bookmark, index) => {
+            if(bookmark.url === url) {
+                bookmarks.splice(index, 1);
+            }
+        });
+
+        renderBookmarks();
+    }
+
+
+    </script>
+</html>
